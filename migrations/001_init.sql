@@ -1,0 +1,2 @@
+-- Script inicial de creación de tablas/índices
+-- Incluye extensiones, tablas, triggers e índices
