@@ -1,1 +1,0 @@
-# Funciones auxiliares (normalización, helpers)

@@ -1,0 +1,33 @@
+"""Storage interface: documents, chunks and the three search primitives hybrid retrieval uses."""
+
+from collections.abc import Sequence
+from typing import Protocol
+
+import numpy as np
+
+from docuchat.models import Chunk, Document, SparseVector
+
+Scored = list[tuple[Chunk, float]]
+
+
+class Store(Protocol):
+    def upsert_document(self, doc: Document) -> None: ...
+    def get_document(self, document_id: str) -> Document | None: ...
+    def find_by_hash(self, content_hash: str) -> Document | None: ...
+    def list_documents(self) -> list[Document]: ...
+    def delete_document(self, document_id: str) -> None: ...
+    def add_chunks(self, chunks: list[Chunk]) -> None: ...
+
+    def dense_search(
+        self, vector: np.ndarray, k: int, document_ids: Sequence[str] | None = None
+    ) -> Scored: ...
+    def lexical_search(
+        self, query: str, k: int, document_ids: Sequence[str] | None = None
+    ) -> Scored: ...
+    def sparse_search(
+        self, vector: SparseVector, k: int, document_ids: Sequence[str] | None = None
+    ) -> Scored: ...
+
+    def neighbors(self, document_id: str, indices: Sequence[int]) -> list[Chunk]:
+        """Chunks of ``document_id`` at the given positions (missing ones are skipped)."""
+        ...

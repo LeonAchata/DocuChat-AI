@@ -1,2 +1,0 @@
-
-# Importa migraciones SQL

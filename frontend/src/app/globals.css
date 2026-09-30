@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f4f3f1;
+  --border: #e6e4e0;
+  --fg: #1c1b1a;
+  --muted: #6f6b66;
+  --accent: #0f766e;
+  --accent-soft: #e6f4f2;
+  --ok: #15803d;
+  --warn: #b45309;
+  --danger: #b91c1c;
+  --code-bg: #f6f5f3;
+  }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111110;
+    --surface: #191918;
+    --surface-2: #222120;
+    --border: #2e2d2b;
+    --fg: #eeeeec;
+    --muted: #a19d97;
+    --accent: #2dd4bf;
+    --accent-soft: #0f2a27;
+    --ok: #4ade80;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --code-bg: #1d1c1b;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-code: var(--code-bg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.prose-answer p {
+  margin: 0.4rem 0;
+}
+.prose-answer ul,
+.prose-answer ol {
+  margin: 0.4rem 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.prose-answer ol {
+  list-style: decimal;
+}
+.prose-answer strong {
+  font-weight: 600;
+}
+.prose-answer code {
+  font-family: var(--font-geist-mono);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+.prose-answer table {
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+.prose-answer th,
+.prose-answer td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.25rem 0.6rem;
+  text-align: left;
+}
+
+mark.cite {
+  background: var(--accent-soft);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 2px;
+}

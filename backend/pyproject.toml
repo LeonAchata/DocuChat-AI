@@ -1,0 +1,69 @@
+[project]
+name = "docuchat"
+version = "2.0.0"
+description = "Production-grade RAG over your documents: hybrid retrieval, reranking and cited answers."
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Leon Achata", email = "leonyemin@gmail.com" }]
+dependencies = [
+    "anthropic>=1.9,<2",
+    "langgraph>=1.2,<2",
+    "langgraph-checkpoint-sqlite>=3.1,<4",
+    "fastembed>=0.8,<0.9",
+    "numpy>=2.0,<3",
+    "snowballstemmer>=3.0,<4",
+    "pdfplumber>=0.11,<0.12",
+    "python-docx>=1.1,<2",
+    "beautifulsoup4>=4.12,<5",
+    "pydantic>=2.9,<3",
+    "pydantic-settings>=2.6,<3",
+    "fastapi>=0.120,<1",
+    "python-multipart>=0.0.20",
+    "uvicorn[standard]>=0.30,<1",
+    "typer>=0.15,<1",
+    "rich>=13,<16",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary,pool]>=3.2,<4", "pgvector>=0.4,<0.6"]
+
+[project.scripts]
+docuchat = "docuchat.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "reportlab>=4.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/docuchat"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/docuchat/cli.py" = ["B008"]  # typer declares options as default values
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["postgres: needs DOCUCHAT_TEST_DATABASE_URL pointing at Postgres with pgvector"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]

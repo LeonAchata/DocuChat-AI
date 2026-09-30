@@ -1,0 +1,47 @@
+# Full stack: Postgres + pgvector, the API (with local ONNX models) and the web UI.
+#   ANTHROPIC_API_KEY=sk-ant-... docker compose up --build
+# then open http://localhost:3000 and upload a document (try samples/).
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: docuchat
+      POSTGRES_PASSWORD: docuchat
+      POSTGRES_DB: docuchat
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docuchat"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:?Set ANTHROPIC_API_KEY}
+      DOCUCHAT_STORE: postgres
+      DOCUCHAT_DATABASE_URL: postgresql://docuchat:docuchat@db:5432/docuchat
+      DOCUCHAT_CORS_ORIGINS: '["http://localhost:3000"]'
+    volumes:
+      - appdata:/data  # index state, conversations and cached models
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  appdata:

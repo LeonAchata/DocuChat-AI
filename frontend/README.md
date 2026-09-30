@@ -1,5 +1,10 @@
-# Frontend
+# DocuChat — Web UI
 
-Chatbot simple para cargar PDF y hacer preguntas.
+Next.js 16 client for the DocuChat API: document library with drag-and-drop upload and live indexing status, streamed answers, clickable citations that open the source passage with the cited sentences highlighted, and a retrieval trace.
 
-Puedes usar Streamlit, React, o HTML+JS según preferencia.
+```bash
+npm install
+NEXT_PUBLIC_API_URL=http://localhost:8000 npm run dev
+```
+
+See the [root README](../README.md) for the full project.
