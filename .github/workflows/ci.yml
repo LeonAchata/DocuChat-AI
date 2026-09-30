@@ -33,7 +33,18 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run ruff check .
       - run: uv run mypy src
-      - run: uv run pytest -q -rs
+      - run: uv run pytest -q -rs --junitxml=junit.xml
+      - name: Annotate test failures
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          for case in ET.parse("junit.xml").iter("testcase"):
+              for f in [*case.iter("failure"), *case.iter("error")]:
+                  detail = (f.text or f.get("message") or "")[-3000:]
+                  detail = detail.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+                  print(f"::error title={case.get('name')}::{detail}")
+          PY
 
   frontend:
     runs-on: ubuntu-latest
