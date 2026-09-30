@@ -239,5 +239,8 @@ def _chunk(row: dict[str, Any]) -> Chunk:
         token_count=row["token_count"],
     )
     embedding = row.get("embedding")
-    chunk.dense = np.asarray(embedding, dtype=np.float32) if embedding is not None else None
+    if embedding is not None:
+        # pgvector >= 0.4 returns a Vector wrapper; older versions return a numpy array.
+        values = embedding.to_numpy() if hasattr(embedding, "to_numpy") else embedding
+        chunk.dense = np.asarray(values, dtype=np.float32)
     return chunk
