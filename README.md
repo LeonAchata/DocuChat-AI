@@ -134,4 +134,8 @@ frontend/       Next.js 16: library with drag-and-drop upload, streamed answers,
 
 ## License
 
-MIT © Leon Achata
+MIT 
+
+## Author
+
+- Leon Achata
